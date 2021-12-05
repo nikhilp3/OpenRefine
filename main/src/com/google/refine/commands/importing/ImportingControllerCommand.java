@@ -52,7 +52,8 @@ import com.google.refine.util.ParsingUtilities;
 public class ImportingControllerCommand extends Command {
 
     final static Logger logger = LoggerFactory.getLogger("importing-controller_command");
-    
+
+    //No javadocs for @Override functions according to https://google.github.io/styleguide/javaguide.html#s7.3.2-javadoc-exception-overrides
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

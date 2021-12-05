@@ -100,13 +100,22 @@ public class ImportingUtilities {
         public void setProgress(String message, int percent);
         public boolean isCanceled();
     }
-    
+
+    /**
+     * Loads data from file from specified path in the Http request
+     * @param request the request made from the Http request
+     * @param response the response associated with the Http request
+     * @param parameters properties associated with the current data load job
+     * @param job the ImportingJob created by the Http request
+     * @param config the ObjectNode to hold metadata about the current load job
+     * @throws IOException thrown when data cannot be loaded from the specified file path
+     */
     static public void loadDataAndPrepareJob(
         HttpServletRequest request,
         HttpServletResponse response,
         Properties parameters,
         final ImportingJob job,
-        ObjectNode config) throws IOException, ServletException {
+        ObjectNode config) throws IOException {
         
         ObjectNode retrievalRecord = ParsingUtilities.mapper.createObjectNode();
         JSONUtilities.safePut(config, "retrievalRecord", retrievalRecord);
@@ -526,6 +535,7 @@ public class ImportingUtilities {
         abstract public boolean isCanceled();
     }
 
+    // Javadocs not needed for private method https://google.github.io/styleguide/javaguide.html#s7.3-javadoc-where-required
     static private long saveStreamToFile(InputStream stream, File file, SavingUpdate update) throws IOException {
         long length = 0;
         FileOutputStream fos = new FileOutputStream(file);
@@ -548,7 +558,17 @@ public class ImportingUtilities {
             fos.close();
         }
     }
-    
+
+    /**
+     * Returns boolean to indicate if an archive input stream is successfully exploded
+     * @param rawDataDir file of archived data to load
+     * @param file temporary file to use for loading data
+     * @param fileRecord metadata about the file being loaded
+     * @param fileRecords additional metadata about the files being processed in this request
+     * @param progress used to indicate progress of a load job
+     * @return boolean to indicate if an archive input stream is successfully exploded
+     * @throws IOException thrown if the file cannot be loaded or processed
+     */
     static public boolean postProcessRetrievedFile(
             File rawDataDir, File file, ObjectNode fileRecord, ArrayNode fileRecords, final Progress progress) throws IOException {
         
@@ -633,6 +653,7 @@ public class ImportingUtilities {
     }
     
     // FIXME: This is wasteful of space and time. We should try to process on the fly
+    // Javadocs not needed for private method https://google.github.io/styleguide/javaguide.html#s7.3-javadoc-where-required
     static private boolean explodeArchive(
         File rawDataDir,
         InputStream archiveIS,
